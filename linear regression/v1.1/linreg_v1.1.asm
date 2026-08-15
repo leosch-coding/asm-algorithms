@@ -95,11 +95,11 @@ simplify:
     ; m == xmm10
 
     mulsd xmm0, xmm10 ; gets n(acc of x)
-    subsd xmm0, xmm1 ; gets (acc of y) - m(acc of x)
+    subsd xmm1, xmm0 ; gets (acc of y) - m(acc of x)
 
-    divsd xmm0, xmm15
+    divsd xmm1, xmm15
 
-    ; b == xmm0
+    ; b == xmm1
 
     jmp exit
 ; ------------------------------------------------------------------------------------
@@ -112,7 +112,7 @@ exit:
      sub rsp, 16
      mov rsi, rsp
      movsd [rsp], xmm10
-     movsd [rsp+8], xmm0
+     movsd [rsp+8], xmm1
      mov rdx, 16
      mov rdi, 1
      mov rax, 1
