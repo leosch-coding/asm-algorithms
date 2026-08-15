@@ -112,7 +112,7 @@ exit:
      sub rsp, 16
      mov rsi, rsp
      movsd [rsp], xmm10
-     movsd [rsp+8], xmm11
+     movsd [rsp+8], xmm0
      mov rdx, 16
      mov rdi, 1
      mov rax, 1
