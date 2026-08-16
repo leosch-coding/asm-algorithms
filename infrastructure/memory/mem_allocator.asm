@@ -2,6 +2,9 @@ section .data
     ; Error 1 - sys_read fail
     err1 db "Error: Sys_read failed", 10
     len_err1 equ $ - err1
+
+    err2 db "Error: Sys_mmap failed", 10
+    len_err2 equ $ - err2
 ; ------------------------------------------
 section .text
 global _get_buffer_size
@@ -21,7 +24,6 @@ _get_buffer_size:
     syscall
     cmp rax, 0
     jl .handle_error1
-    cmp rax, 0
     je .calc_buffer_size
     cmp rax, 4096
     je .reset_intake
@@ -45,7 +47,14 @@ _get_buffer_size:
     mov rdi, -1
     jmp .bad_exit
 
+.handle_error2:
+    mov rsi, err2
+    mov rdx, len_err2
+    mov rdi, -1
+    jmp .bad_exit
+
 .bad_exit:
+    add rsp, 4096
     mov r12, rdi
     mov rax, 1
     mov rdi, 2
@@ -60,5 +69,14 @@ _get_buffer_size:
     add rsp, 4096
     imul r15, 4096 ; calculate buffer size
     add r15, r14 ; this gonna be the size of our buffer, dynamically allocated
-    mov rax, r15
+    mov rax, 9
+    mov rdi, 0
+    mov rsi, r15
+    mov rdx, 1 | 2
+    mov r10, 0x20 | 0x02
+    mov r8, -1
+    mov r9, 0
+    syscall
+    cmp rax, 0
+    jl .handle_error2
     ret
