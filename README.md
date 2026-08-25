@@ -7,4 +7,20 @@ Different algorithms implemented in x86_64 Assembly
 
  - v1.0: Full working demo. Takes a .txt file, and outputs m and b for the coords given
    - Infrastructure included: Memory allocator, parser for the file, converter of floats to ascii
- 
+ - v2.0: WIP
+   - Planning to add kahan summation, as well as centred values to improve numeric stability
+   
+## Algorithms currently being developed:
+
+ ### Naive Bayes
+
+ - I've been programming both the 'exp' and the 'log' functions, both using Taylor series right now. Is this precise? Not really, I'm going to improve it in the next iteration
+ - Both will be posted alongside Naive Bayes
+ - Exp and Log functions are intentionally left generic and primitive in order to be tweaked as needed
+ - Estimated completion time for log/exp: today
+ - Estimated completion time for full algorithm: 2-3 days~
+
+ ### k-NN
+
+ - Currently in the design stage
+ - Estimated completion time: 1-2 days~ post-Naive Bayes
