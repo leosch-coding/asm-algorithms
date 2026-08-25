@@ -1,11 +1,4 @@
 If you want it to print out vaguely accurate results, then simply run the program with a txt file.
 Note: it WILL break if you try to feed in input that isn't exactly in the format described in the example file
-
-"Why doesn't it output the correct numbers?" 
-
-Great question. I have no idea.
-
-What I can say though is that it outputs the actual m and b...just...without any decimals, and also rounded down. (Aka, it can be 1.01, or 1.99, and it will still round down to 1)
-
-This is a WIP, I will be fixing this.
+This will be fixed in v2.0
   
