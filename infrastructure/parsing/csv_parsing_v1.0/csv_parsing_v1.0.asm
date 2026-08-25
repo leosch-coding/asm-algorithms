@@ -11,7 +11,7 @@ extern output_buffer
 default rel
 
 section .bss
-    pointbuf resb 160 ; this is our buffer that stores the pointers to each of the columns we make
+    pointbuf resb 160 ; this is our buffer that stores the pointers to each of the fuckass columns we make
 
 section .text
 global _start
@@ -26,7 +26,7 @@ global _start
     ; r10 == Keeps how many decimals there are (Increases for every decimal added, so that we can divide the total number of it by however many times there's a decimal)
     ; r11 == Keeps current column size count
     ; r12 == Keeps negative state (if 0, number is positive, if 1, number is negative)
-    ; r13 == Offset of how much we need to offset for each column
+    ; r13 == Free parking
     ; r14 == Keeps decimal state (if 0, number is before the decimal point, if 1, number is after the decimal point)
     ; r15 == Our counter of what byte we're working with
 ; -----------------------------------------------
@@ -39,6 +39,7 @@ _start:
 
     xor rdx, rdx 
     xor rcx, rcx
+    xor r9, r9
     xor r10, r10
     xor r11, r11
     xor r12, r12
@@ -106,7 +107,7 @@ _start:
     xor r8, r8
     mov r8b, [rsi+r15]
 
-    ; we check real quick if we're past the word yet, if so, find the height of the current column
+    ; check for the end of the word
     cmp r8, ','
     je .find_height_of_column
 
@@ -207,9 +208,11 @@ _start:
     ; Column operations
 ; --------------------------------------------------
 .find_height_of_column:
-    mov rdi, r11
+    ; save the filesize in the stack
+    push rdi
 
-    ; the syscall will clobber r11, that's okay for now I think
+    ; transfer the current column size into rdi to call the buffer with
+    mov rdi, r11
 
     call _get_buffer
 
@@ -221,6 +224,9 @@ _start:
     ; Does it work? Also yes.
 
     mov [pointbuf+rcx*8-8], rax
+
+    pop rdi
+
 ; ---------------------------------------------------
 .shove_value_into_column_buffer:
 
@@ -228,9 +234,11 @@ _start:
     ; then access rax, and 
     ; ts the smartest thing I've ever done :skull :dying-rose :sob
     lea rax, [pointbuf+rcx*8-8]
-    movsd [rax+r13*8], xmm0
 
-    inc r13
+    dec r11
+    movsd [rax+r13*8], xmm0
+    inc r11
+
     jmp .loop
 ; -------------------------------------------------
     ; Output
@@ -261,6 +269,10 @@ _start:
     mov rdi, 0
     syscall
 
+
+    
+
+    
 
     
 
