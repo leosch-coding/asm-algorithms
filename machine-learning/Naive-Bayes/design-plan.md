@@ -30,3 +30,13 @@ After it rets, and 'pings' back to the parser, that signals the parser to now ca
 We also would need to use the dynamic memory allocator to make an output buffer lmfao.
 Anyway, because of the simplicity of the output, I just match the class number to the index of the column, grab that value, then shove the current value we're working with to it (though, this needs to be converted to ASCII. Good thing we already made a float-to-ascii converter, so we can reuse a lot of code there) alongside it.
 We FINALLY go and output that in the parser, and bam, we're done.
+
+
+**Update 1**:
+Gonna use struct of arrays, because when I hit a char value (end of the 'column' we immediately call mem-allocator, make a buffer, and dump that column into said buffer.
+Problem: Where are we gonna store the pointers to the buffer?
+IN ANOTHER BUFFER.
+I'll make a buffer of 8(20) bytes, to allow 20 seperate features to be tested simutaniously. (160)
+
+As I'm building this I sorta am starting to realize that I need to start juggling registers to keep up with the states that keep track of number-related stuff and ALSO states that keep track of class related stuff
+Amazing.
