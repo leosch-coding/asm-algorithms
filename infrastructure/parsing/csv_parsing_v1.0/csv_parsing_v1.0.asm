@@ -1,3 +1,7 @@
+; NOTE
+; THIS IS A PROTOTYPE
+; EXPECT A LOT OF BUGS
+
 extern _get_buffer
 extern _train
 extern _classify
@@ -7,7 +11,7 @@ extern output_buffer
 default rel
 
 section .bss
-    pointbuf resb 160 ; this is our buffer that stores the pointers to each of the fuckass columns we make
+    pointbuf resb 160 ; this is our buffer that stores the pointers to each of the columns we make
 
 section .text
 global _start
@@ -102,7 +106,7 @@ _start:
     xor r8, r8
     mov r8b, [rsi+r15]
 
-        ; check if it's a number
+    ; we check real quick if we're past the word yet, if so, find the height of the current column
     cmp r8, ','
     je .find_height_of_column
 
