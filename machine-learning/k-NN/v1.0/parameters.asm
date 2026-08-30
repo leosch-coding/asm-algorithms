@@ -2,49 +2,56 @@ global num_rows
 global num_features
 global num_classes
 global one
+global classifier_input_size
 global file_size
-global class_valeus
+global class_values
 global x_values
 global y_values
 global z_values
 global classifier_input_buffer
-
+global closest_buffer
+global nearest_neighbors
+global class_A_count
+global class_B_count
+global class_C_count
+global k
+global training_input_buf
 
 section .data
 ; -----------------------------------------------
     ; ** ADJUST PARAMETERS HERE **
 ; -----------------------------------------------
-     num_rows qb 0 ; default: 0
+     num_rows dw 15 ; default: 0
+; ----------------------------------------------
+    num_features dw 3 ; default: 0
 ; -----------------------------------------------
-    num_features qb 0 ; default: 0
+    num_classes dw 3 ; default: 0
 ; -----------------------------------------------
-    num_classes idk, 0 ; default: 0
-; -----------------------------------------------
-    one qb, 1.0
+    one dq 1.0
 ; -----------------------------------------------
     ; Note: we need a size variable for input when our classifier sys_read-s
-    classifier_input_size resp, 0 ; same formula as to find buffer size later on
+    classifier_input_size dd 24 ; same formula as to find buffer size later on
 ; -----------------------------------------------
-    k db, 3
+    k db 3
 
+    file_size db 209
 
 
 section .bss
 ; -----------------------------------------------
 ; WE DEFINE FILESIZE OF OUR TRAINING DATA BUFFER BY USING:
 ; -----------------------------------------------
-    ; (num_rows * num_features) + num_classes
-    file_size resp, 0 
+    training_input_buf resb 209
 ; -----------------------------------------------
     ; DEFINE TRAINING BUFFERS
 ; -----------------------------------------------
-    class_values resp, 0
+    class_values resb 15
 
-    x_values resp, 0
+    x_values resb 120
 
-    y_values resp, 0
+    y_values resb 120
 
-    z_values resp, 0
+    z_values resb 120
 ; -----------------------------------------------
 
 ; -----------------------------------------------
@@ -61,24 +68,24 @@ section .bss
 ; -----------------------------------------------
 ; Assign the classification buffer size as num.features * 8
 ; -----------------------------------------------
-    classifier_input_buffer resp, 0
+    classifier_input_buffer resb 24
 ; -----------------------------------------------
 
 
 ; -----------------------------------------------
 ; Set the buffer for the current closest neighbor (Distance:class)
 ; -----------------------------------------------
-    closest_buffer resp, 0
+    closest_buffer resb 10
 ; -----------------------------------------------
 ; Set the buffer for the array of closest neighbors (Distance: class)
 ; -----------------------------------------------
-    nearest_neighbors resp, 0
+    nearest_neighbors resb 6
 ; -----------------------------------------------
 ; Set up our buffers that keep track of the count of each of our classes 
 ; -----------------------------------------------
-    class_A_count resp, 0
-    class_B_count resp, 0
-    class_C_count resp, 0
+    class_A_count resb 4
+    class_B_count resb 4
+    class_C_count resb 4
 
 
 ; REGISTER REFERENCE
@@ -108,6 +115,8 @@ section .bss
 ; MISC
 ; -----------------------------------------------
     ; xmm5 == Converter/divisor into accurate float representation
+
+
 
 
 
